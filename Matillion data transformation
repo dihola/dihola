@@ -1,0 +1,52 @@
+- 👋 Hi, I’m @Ade
+🚀 Data Transformation Pipeline Using Matillion & AWS S3
+📌 Project Overview
+This project demonstrates how to build a data transformation pipeline using Matillion, AWS S3.
+## 🔧 Workflow
+**Data Ingestion**:  
+The Excel file is uploaded to an AWS S3 bucket (s3://isaclient/Bank_Churn_Messy (1).xlsx).
+Matillion reads the file from S3 and loads it into a staging table.
+
+**Data Transformation (Matillion)**:  
+Used the calculations function to Concatenate Frist_name and Last_Name.
+Used rank fuction to filter the data in an Ascending format.
+Used filter fuction to identify duplicate data.
+Applies custom transformations.
+Transformed data can be Stored in a data warehouse (e.g. Snowflake, Redshift, BigQuery).
+
+<img width="935" alt="S3 Bucket created to store data" src="https://github.com/user-attachments/assets/99ae2d9b-3e9f-432c-912c-5fad35effe0f" />
+<img width="953" alt="IAM account" src="https://github.com/user-attachments/assets/1dd78190-3afd-4a96-bcbc-2c055ed64df7" />
+<img width="402" alt="Transformation Jobs" src="https://github.com/user-attachments/assets/dccacd32-7401-4af1-b19b-fa4a084a99a9" />
+<img width="392" alt="Adding transformation " src="https://github.com/user-attachments/assets/dec7aa27-2d51-43fe-bfe0-3e30cc732fd5" />
+
+**Data Output**:  
+The final dataset is written back to S3 or a database.
+Matillion triggers an ETL job orchestration.
+
+## 🛠 Technologies Used
+Matillion (ETL transformation)
+AWS S3 (Data storage)
+IAM (Access control)
+SQL (Optional Data processing)
+Python (Optional orchestration)
+
+## SQL QUERY that could be used
+-- Merge Firstname and Surname into FullName
+SELECT 
+    CONCAT(Firstname, ' ', Surname) AS FullName,
+    Email,
+    PhoneNumber
+FROM customers;
+
+-- Identify and remove duplicate customers based on Email
+WITH ranked_customers AS (
+    SELECT *, 
+           ROW_NUMBER() OVER (PARTITION BY Email ORDER BY CustomerID) AS row_num
+    FROM customers
+)
+DELETE FROM customers
+WHERE row_num > 1;
+
+
+
+
